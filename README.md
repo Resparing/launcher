@@ -47,7 +47,7 @@ static const char* ENVIRONMENT_VARIABLES[]
 ```cpp
 static const char* ENVIRONMENT_VARIABLES[]
 {
-	"MY_VARIABLE", 		/* = */		"MY_VALUE",					/* Override? */		"true",
+	"MY_VARIABLE", 			/* = */		"MY_VALUE",					/* Override? */		"true",
 	"MY_OTHER_VARIABLE", 		/* = */		"MY_OTHER_VALUE",			/* Override? */		"false",
 };
 ```
