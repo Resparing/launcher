@@ -25,7 +25,7 @@ These environment variables can also change at runtime, right before the fist `#
 <br>
 
 ### How to use
-- Open up the `launcher.cpp` file, inside there will be the following at the very top of the page
+- Open up the `launcher.cpp` file or the `launcher.c`, inside there will be the following at the very top of the page. They will be the exact same inside the c file and the cpp file.
 ```cpp
 static const char* EXECUTABLE_PATH = "my_app";
 
