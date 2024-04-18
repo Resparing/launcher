@@ -10,18 +10,18 @@ These environment variables can also change at runtime, right before the fist `#
 
 
 ### Requirements
-- Clang or gcc with at least c++20
+- clang or gcc with at least c++20 and c17
 
 ### Compile command
 
 - For MacOS/Linux
-`c++ -o main launcher.cpp -std=c++20`
-`./make.sh`
+- For the C++ file `c++ -o launcher launcher.cpp -std=c++20`
+- For the C file `cc -o launcher launcher.c -std=c17`
 <br>
 
 - For Windows
-`c++ -o main.exe launcher.cpp -std=c++20`
-`.\make.bat`
+- For the C++ file `c++ -o launcher.exe launcher.cpp -std=c++20`
+- For the C file `cc -o launcher.exe launcher.cpp -std=c17`
 <br>
 
 ### How to use
