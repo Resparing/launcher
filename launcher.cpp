@@ -6,7 +6,7 @@ static const char* ENVIRONMENT_VARIABLES[]
 	"MY_OTHER_VARIABLE", 		/* = */		"MY_OTHER_VALUE",			/* Override? */		"false",
 };
 
-#define LAUNCHER_NO_OPTIONS_CHECKING 1
+// #define LAUNCHER_NO_OPTIONS_CHECKING 1
 
 #include <cstdint>
 #include <cstdlib>
@@ -90,7 +90,7 @@ int main(void)
 			"Failed to set enviornment variable: \"" + std::string{ENVIRONMENT_VARIABLES[i]} + "\".\n"
 		);
 	#else
-		if(_putenv_s(ENVIRONMENT_VARIABLES[i], ENVIRONMENT_VARIABLES[i + 1]) != 0) std::exit(EXIT_FAILURE);
+		if(_putenv_s(ENVIRONMENT_VARIABLES[i], ENVIRONMENT_VARIABLES[i + 1]) != 0) return EXIT_FAILURE;
 	#endif
 #else  //Set environment variable for POSIX
 	#ifndef LAUNCHER_NO_OPTIONS_CHECKING
@@ -100,7 +100,7 @@ int main(void)
 			"Failed to set enviornment variable: \"" + std::string{ENVIRONMENT_VARIABLES[i]} + "\".\n"
 		);
 	#else
-		if(setenv(ENVIRONMENT_VARIABLES[i], ENVIRONMENT_VARIABLES[i + 1], 1) == 0) std::exit(EXIT_FAILURE);
+		if(setenv(ENVIRONMENT_VARIABLES[i], ENVIRONMENT_VARIABLES[i + 1], 1) == 0) return EXIT_FAILURE;
 	#endif
 #endif
 
@@ -110,16 +110,16 @@ int main(void)
 #endif
 	}
 
-#ifndef LAUNCHER_NO_OPTIONS_CHECKING
-		std::cout << "\033[1;34m[DEBUG]:\033[0m Launching Application at: " << std::filesystem::path{EXECUTABLE_PATH}.make_preferred() << "\n";
-#endif
-
 	const std::regex REPLACE_REGEX{R"([\\/])"};
 
 #if defined(_WIN32) || defined(_WIN64)  //std::filesystem::make_preferred()
 	std::string executableCommand = std::regex_replace(EXECUTABLE_PATH, REPLACE_REGEX, R"(\)");
 #else  //std::filesystem::make_preferred()
 	std::string executableCommand = std::regex_replace(EXECUTABLE_PATH, REPLACE_REGEX, R"(/)");
+#endif
+
+#ifndef LAUNCHER_NO_OPTIONS_CHECKING
+		std::cout << "\033[1;34m[DEBUG]:\033[0m Launching Application at: " << executableCommand << "\n";
 #endif
 
 #if defined(_WIN32) || defined(_WIN64)  //Run application for windows
