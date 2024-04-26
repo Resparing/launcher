@@ -1,12 +1,4 @@
-static const char* EXECUTABLE_PATH = "my_app";
-
-static const char* ENVIRONMENT_VARIABLES[]
-{
-	"MY_VARIABLE", 				/* = */		"MY_VALUE",					/* Override? */		"true",
-	"MY_OTHER_VARIABLE", 		/* = */		"MY_OTHER_VALUE",			/* Override? */		"false",
-};
-
-// #define LAUNCHER_NO_OPTIONS_CHECKING 1
+#include "launcher.h"
 
 #include <cstdint>
 #include <cstdlib>
@@ -22,8 +14,11 @@ static const char* ENVIRONMENT_VARIABLES[]
 #include <string_view>
 #endif
 
-int main(void)
+int main(int argc, const char* argv[])
 {
+	preInit(argc, argv);
+
+
 #ifndef LAUNCHER_NO_OPTIONS_CHECKING
 	//Lambda for runtime assert
 	auto runtime_assert = [&](bool opt, std::string_view errorMessage)

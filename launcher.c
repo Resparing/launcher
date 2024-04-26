@@ -1,12 +1,4 @@
-static const char* EXECUTABLE_PATH = "my_app";
-
-static const char* ENVIRONMENT_VARIABLES[] =
-{
-	"MY_VARIABLE", 				/* = */		"MY_VALUE",					/* Override? */		"true",
-	"MY_OTHER_VARIABLE", 		/* = */		"MY_OTHER_VALUE",			/* Override? */		"false",
-};
-
-// #define LAUNCHER_NO_OPTIONS_CHECKING 1
+#include "launcher.h"
 
 #include <stdint.h>
 #include <stdlib.h>
@@ -108,7 +100,7 @@ char* mMakePreferred(const char* path)
 
 	char* result = malloc(size);
 
-	assert(result != NULL, "malloc() failed for result");
+	assert(result != NULL, "malloc() failed for result\n");
 
 	memcpy(result, path, size);
 
@@ -132,23 +124,25 @@ char* mMakePreferred(const char* path)
 	return result;
 }
 
-int main(void)
+int main(int argc, const char* argv[])
 {
+	preInit(argc, argv);
+
 #ifndef LAUNCHER_NO_OPTIONS_CHECKING
 	//Check if variable types weren't modified
 	assert
 	(
 		sizeof(**ENVIRONMENT_VARIABLES) == sizeof(const char),
-		"Edited type of environment variables, supposed to be `const char*`"
+		"Edited type of environment variables, supposed to be `const char*`\n"
 	);
 	assert
 	(
 		sizeof(*EXECUTABLE_PATH) == sizeof(const char),
-		"Edited type of executable path, supposed to be `const char*`"
+		"Edited type of executable path, supposed to be `const char*`\n"
 	);
 
 	//Check if there are 3 options
-	assert(SIZE(ENVIRONMENT_VARIABLES) % 3 == 0, "Incorrect format of options specified");
+	assert(SIZE(ENVIRONMENT_VARIABLES) % 3 == 0, "Incorrect format of options specified\n");
 
 	//Check if every third option is either true or false
 	for(size_t i = 2; i < SIZE(ENVIRONMENT_VARIABLES); i += 3)
@@ -234,12 +228,12 @@ int main(void)
 	char* mPreferredExecutablePath = mMakePreferred(EXECUTABLE_PATH);
 
 	char* mExecutableCommand = malloc(strlen("./\"") + strlen(EXECUTABLE_PATH) + strlen("\""));
-	assert(mExecutableCommand != NULL, "malloc() failed for mExecutableCommand");
+	assert(mExecutableCommand != NULL, "malloc() failed for mExecutableCommand\n");
 
 	sprintf(mExecutableCommand, "./\"%s\"", mPreferredExecutablePath);
 
 	char* winExecutableCommand = malloc(strlen("powershell -Command \"& {.\\\"") + strlen(mExecutableCommand) + strlen("\"}\""));
-	assert(winExecutableCommand != NULL, "malloc() failed for winExecutableCommand");
+	assert(winExecutableCommand != NULL, "malloc() failed for winExecutableCommand\n");
 
 	sprintf(winExecutableCommand, "powershell -Command \"& {.\\\"%s\"}\"", mExecutableCommand);
 

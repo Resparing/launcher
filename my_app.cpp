@@ -1,11 +1,11 @@
 #include <cstdlib>
 #include <iostream>
 
-extern char **environ;
+extern char** environ;
 
 int main(void)
 {
-	for (char** env = environ; *env != nullptr; ++env)
+	for(char** env = environ; *env != nullptr; ++env)
 	{
 		std::cout << *env << std::endl;
 	}
