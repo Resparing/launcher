@@ -132,12 +132,12 @@ int main(int argc, const char* argv[])
 	//Check if variable types weren't modified
 	assert
 	(
-		sizeof(**ENVIRONMENT_VARIABLES) == sizeof(const char),
+		sizeof(**ENVIRONMENT_VARIABLES) == sizeof(char),
 		"Edited type of environment variables, supposed to be `const char*`\n"
 	);
 	assert
 	(
-		sizeof(*EXECUTABLE_PATH) == sizeof(const char),
+		sizeof(*EXECUTABLE_PATH) == sizeof(char),
 		"Edited type of executable path, supposed to be `const char*`\n"
 	);
 
@@ -243,15 +243,14 @@ int main(int argc, const char* argv[])
 	free(winExecutableCommand);
 	free(mPreferredExecutablePath);
 	free(mExecutableCommand);
-
-	return result;
-
 #else  //Run application for UNIX
 	const int result = system(mExecutableCommand);
 
 	free(mPreferredExecutablePath);
 	free(mExecutableCommand);
+#endif
+
+	postInit(argc, argv);
 
 	return result;
-#endif
 }

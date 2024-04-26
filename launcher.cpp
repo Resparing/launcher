@@ -33,12 +33,12 @@ int main(int argc, const char* argv[])
 	//Check if variable types weren't modified
 	static_assert
 	(
-		std::is_same<std::remove_cv<std::remove_reference<decltype(ENVIRONMENT_VARIABLES[0])>::type>::type, const char*>::value,
+		sizeof(**ENVIRONMENT_VARIABLES) == sizeof(char),
 		"Edited type of environment variables, supposed to be `const char*`"
 	);
 	static_assert
 	(
-		std::is_same<std::remove_cv<std::remove_reference<decltype(EXECUTABLE_PATH)>::type>::type, const char*>::value,
+		sizeof(*EXECUTABLE_PATH) == sizeof(char),
 		"Edited type of executable path, supposed to be `const char*`"
 	);
 
@@ -118,8 +118,12 @@ int main(int argc, const char* argv[])
 #endif
 
 #if defined(_WIN32) || defined(_WIN64)  //Run application for windows
-	return std::system(("powershell -Command \"& {.\\\"" + executableCommand + "\"}\"").c_str());
+	const int result = std::system(("powershell -Command \"& {.\\\"" + executableCommand + "\"}\"").c_str());
 #else  //Run application for UNIX
-	return std::system(("./\"" + executableCommand + "\"").c_str());
+	const int result = std::system(("./\"" + executableCommand + "\"").c_str());
 #endif
+
+	postInit(argc, argv);
+
+	return result;
 }

@@ -12,3 +12,8 @@ void preInit(int argc, const char* argv[])
 {
 	//Change environment variables any way you want here, edit `ENVIRONMENT_VARIABLES` to `char**` if needed
 }
+
+void postInit(int argc, const char* argv[])
+{
+	//Free pointers if needed
+}
