@@ -78,7 +78,7 @@ char* mgetCurrentDirectory(void)
 		if (getcwd(cwd, size) == NULL)
 		{
 			perror("getcwd() error");
-            free(cwd);
+			free(cwd);
 
 			exit(EXIT_FAILURE);
 		}
@@ -126,6 +126,10 @@ char* mMakePreferred(const char* path)
 
 int main(int argc, const char* argv[])
 {
+#ifndef LAUNCHER_NO_OPTIONS_CHECKING
+		printf("\033[1;34m[DEBUG]:\033[0m Running `preInit()` function\n");
+#endif
+
 	preInit(argc, argv);
 
 #ifndef LAUNCHER_NO_OPTIONS_CHECKING
@@ -248,6 +252,10 @@ int main(int argc, const char* argv[])
 
 	free(mPreferredExecutablePath);
 	free(mExecutableCommand);
+#endif
+
+#ifndef LAUNCHER_NO_OPTIONS_CHECKING
+		printf("\033[1;34m[DEBUG]:\033[0m Running `postInit()` function\n");
 #endif
 
 	postInit(argc, argv);

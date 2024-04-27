@@ -10,16 +10,28 @@
 #include <cstring>
 #include <iostream>
 #include <filesystem>
+#include <stdexcept>
 #include <string>
 #include <string_view>
 #endif
 
 int main(int argc, const char* argv[])
 {
-	preInit(argc, argv);
-
-
 #ifndef LAUNCHER_NO_OPTIONS_CHECKING
+	try
+	{
+		std::cout << "\033[1;34m[DEBUG]:\033[0m Running `preInit()` function\n";
+#endif
+		preInit(argc, argv);
+#ifndef LAUNCHER_NO_OPTIONS_CHECKING
+	}
+	catch(const std::exception& error)
+	{
+		std::cerr << "\033[31m[ERROR]:\033[0m " << error.what() << '\n';
+
+		std::exit(EXIT_FAILURE);
+	}
+
 	//Lambda for runtime assert
 	auto runtime_assert = [&](bool opt, std::string_view errorMessage)
 	{
@@ -121,6 +133,10 @@ int main(int argc, const char* argv[])
 	const int result = std::system(("powershell -Command \"& {.\\\"" + executableCommand + "\"}\"").c_str());
 #else  //Run application for UNIX
 	const int result = std::system(("./\"" + executableCommand + "\"").c_str());
+#endif
+
+#ifndef LAUNCHER_NO_OPTIONS_CHECKING
+		std::cout << "\033[1;34m[DEBUG]:\033[0m Running `postInit()` function\n";
 #endif
 
 	postInit(argc, argv);
